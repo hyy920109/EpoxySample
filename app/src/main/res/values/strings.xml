@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">EpoxySample</string>
+    <string name="recycler_linear">LinearLayoutManager</string>
+    <string name="recycler_grid">GridLayoutManager</string>
+    <string name="recycler_paging">Paging/Load More</string>
+    <string name="recycler_header_footer">Header/Footer</string>
+</resources>
