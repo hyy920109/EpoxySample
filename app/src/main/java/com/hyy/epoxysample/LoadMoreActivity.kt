@@ -1,38 +1,21 @@
 package com.hyy.epoxysample
 
-import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.epoxy.EpoxyVisibilityTracker
-import com.hyy.epoxysample.controllers.LinearController
+import com.hyy.epoxysample.controllers.LoadMoreController
 import com.hyy.epoxysample.databinding.ActivityRecyclerViewBinding
-
-private val Float.dp
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this,
-        Resources.getSystem().displayMetrics
-    )
-
-val Int.dp
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this.toFloat(),
-        Resources.getSystem().displayMetrics
-    ).toInt()
 
 /**
  *Create by hyy on 2021/2/25
  */
-class LinearLayoutManagerActivity : AppCompatActivity() {
+class LoadMoreActivity : AppCompatActivity() {
 
     private val rvController by lazy {
-        LinearController()
+        LoadMoreController()
     }
 
     private lateinit var rootView: ActivityRecyclerViewBinding
@@ -46,13 +29,11 @@ class LinearLayoutManagerActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        // Attach the visibility tracker to the RecyclerView. This will enable visibility events.
-        val epoxyVisibilityTracker = EpoxyVisibilityTracker()
-        epoxyVisibilityTracker.partialImpressionThresholdPercentage = 75
-        epoxyVisibilityTracker.attach(rootView.rvContent)
-
         rootView.rvContent.apply {
-            layoutManager = LinearLayoutManager(this@LinearLayoutManagerActivity)
+            val gridLayoutManager = GridLayoutManager(this@LoadMoreActivity, 3).apply {
+                spanSizeLookup = rvController.spanSizeLookup
+            }
+            layoutManager = gridLayoutManager
             adapter = rvController.adapter
             addItemDecoration(object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(
@@ -65,16 +46,34 @@ class LinearLayoutManagerActivity : AppCompatActivity() {
                     outRect.set(10.dp, 10.dp, 10.dp, 0.dp)
                 }
             })
+
+            val loadmoreListener = object : EndlessRecyclerViewScrollListener(gridLayoutManager) {
+                override fun onLoadMore(page: Int) {
+                    println("loadMore-->")
+                    rvController.showLoadMore()
+                    this@LoadMoreActivity.rootView.rvContent.postDelayed({
+                        initData(true)
+                    }, 2000)
+                }
+            }
+            addOnScrollListener(loadmoreListener)
         }
 
     }
 
-    private fun initData() {
+    private fun initData(loadMore: Boolean = false) {
         val data = mutableListOf<Student>()
         for (i in 0..100) {
             data.add(Student("Hyy $i", "$i"))
         }
-        rvController.setData(data)
+
+        if (loadMore) {
+            rvController.addData(data)
+        }else {
+            rvController.setList(data)
+        }
+//        rvController.add()
+//        rvController.requestModelBuild()
 
     }
 }

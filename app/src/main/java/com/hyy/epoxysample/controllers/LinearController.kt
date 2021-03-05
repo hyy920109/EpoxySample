@@ -1,8 +1,8 @@
-package com.hyy.epoxysample
+package com.hyy.epoxysample.controllers
 
-import android.widget.Toast
-import androidx.recyclerview.widget.GridLayoutManager
 import com.airbnb.epoxy.TypedEpoxyController
+import com.hyy.epoxysample.R
+import com.hyy.epoxysample.Student
 import com.hyy.epoxysample.holders.ItemDataHolder
 import com.hyy.epoxysample.holders.ItemViewBindingDataClass
 import com.hyy.epoxysample.holders.customViewItem
@@ -30,6 +30,9 @@ class LinearController : TypedEpoxyController<List<Student>>() {
                 image(R.mipmap.ic_launcher)
                 listener { _, parentView, clickedView, position ->
 
+                }
+                onVisibilityChanged { model, view, percentVisibleHeight, percentVisibleWidth, heightVisible, widthVisible ->
+                    model.name()
                 }
             }
             ItemDataHolder(student)

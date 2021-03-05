@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.*
 import com.hyy.epoxysample.R
 import com.hyy.epoxysample.databinding.ItemCustomViewLayoutBinding
@@ -64,38 +65,41 @@ class CustomViewItem @JvmOverloads constructor(
         binding.name.setOnClickListener(listener)
     }
 
+    //页面退出的时候也是会回调这个方法的  注意不要内存泄漏
     @OnVisibilityStateChanged
     fun onVisibilityStateChanged(
         @VisibilityState.Visibility visibilityState: Int
     ) {
         when (visibilityState) {
+            //可见 可以认为是刚刚可见就被调用了
             VisibilityState.VISIBLE -> {
                 Log.d(TAG, "$title Visible")
-//                onVisibilityEventDrawable.visible = true
             }
+            //完全不可见
             VisibilityState.INVISIBLE -> {
                 Log.d(TAG, "$title Invisible")
-//                onVisibilityEventDrawable.visible = false
             }
+            //这个回调在两种情形下调用
+            //① 这个item可见部分大于一半的试图（recyclerView 整体高度（竖直滑动情况下））
+            //② 这个item小于一半视图高度  这个item全部可见时会被调用（和FULL_IMPRESSION_VISIBLE 同事调用）
             VisibilityState.FOCUSED_VISIBLE -> {
                 Log.d(TAG, "$title FocusedVisible")
-//                onVisibilityEventDrawable.focusedVisible = true
             }
+            //可见部分不足百分白 但超过Threshold(75%)
             VisibilityState.UNFOCUSED_VISIBLE -> {
                 Log.d(TAG, "$title UnfocusedVisible")
-//                onVisibilityEventDrawable.focusedVisible = false
             }
+            //可见部分超过Threshold75%
             VisibilityState.PARTIAL_IMPRESSION_VISIBLE -> {
                 Log.d(TAG, "$title PartialImpressionVisible")
-//                onVisibilityEventDrawable.partialImpression = true
             }
+            //可见部分已不足Threshold75%
             VisibilityState.PARTIAL_IMPRESSION_INVISIBLE -> {
                 Log.d(TAG, "$title PartialImpressionInVisible")
-//                onVisibilityEventDrawable.partialImpression = false
             }
+            //全部可见
             VisibilityState.FULL_IMPRESSION_VISIBLE -> {
                 Log.d(TAG, "$title FullImpressionVisible")
-//                onVisibilityEventDrawable.fullImpression = true
             }
         }
     }
@@ -118,7 +122,7 @@ class CustomViewItem @JvmOverloads constructor(
 
     @OnViewRecycled
     fun clear() {
-        Log.d(TAG, "clear: -->")
+        Log.d(TAG, "$title clear: -->")
         //onVisibilityEventDrawable.reset()
     }
 

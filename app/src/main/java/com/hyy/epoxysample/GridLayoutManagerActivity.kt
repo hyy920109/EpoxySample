@@ -1,14 +1,12 @@
 package com.hyy.epoxysample
 
-import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hyy.epoxysample.controllers.GridController
 import com.hyy.epoxysample.databinding.ActivityRecyclerViewBinding
 
 /**
@@ -33,7 +31,7 @@ class GridLayoutManagerActivity : AppCompatActivity() {
     private fun initView() {
         rootView.rvContent.apply {
             layoutManager = GridLayoutManager(this@GridLayoutManagerActivity, 3).apply {
-//                spanSizeLookup = rvController.spanSizeLookup
+                spanSizeLookup = rvController.spanSizeLookup
             }
             adapter = rvController.adapter
             addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -56,7 +54,6 @@ class GridLayoutManagerActivity : AppCompatActivity() {
             data.add(Student("Hyy $i", "$i"))
         }
         rvController.setData(data)
-//        rvController.requestModelBuild()
 
     }
 }

@@ -19,6 +19,8 @@
 
         <activity android:name=".LinearLayoutManagerActivity"/>
         <activity android:name=".GridLayoutManagerActivity"/>
+        <activity android:name=".LoadMoreActivity"/>
+        <activity android:name=".HeaderFooterActivity"/>
     </application>
 
 </manifest>

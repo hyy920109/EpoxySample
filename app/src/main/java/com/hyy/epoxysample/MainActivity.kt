@@ -19,10 +19,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         rootView.btnPaging.setOnClickListener {
-
+            startActivity(Intent(this, LoadMoreActivity::class.java))
         }
 
         rootView.btnHeader.setOnClickListener {
+            startActivity(Intent(this, HeaderFooterActivity::class.java))
 
         }
     }
