@@ -26,5 +26,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, HeaderFooterActivity::class.java))
 
         }
+
+        rootView.btnUpdateData.setOnClickListener {
+            startActivity(Intent(this, UpdateItemActivity::class.java))
+
+        }
     }
 }

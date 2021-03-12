@@ -4,4 +4,5 @@
     <string name="recycler_grid">GridLayoutManager</string>
     <string name="recycler_paging">Paging/Load More</string>
     <string name="recycler_header_footer">Header/Footer</string>
+    <string name="recycler_update_data">Update Data</string>
 </resources>
